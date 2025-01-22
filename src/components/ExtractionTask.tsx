@@ -3,7 +3,7 @@ import { FileUpload } from './FileUpload';
 import { Button } from './ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Card } from './ui/card';
-import { Play } from 'lucide-react';
+import { Play, FileText } from 'lucide-react';
 import { toast } from 'sonner';
 import type { SchemaField } from './SchemaBuilder';
 
@@ -37,9 +37,9 @@ export const ExtractionTask: React.FC<ExtractionTaskProps> = ({ schemas, onExtra
     <Card className="p-6 space-y-6">
       <h2 className="text-2xl font-semibold">Extract Data</h2>
       
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-2">Select Schema</label>
+      <div className="space-y-6">
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-muted-foreground">Select Schema</label>
           <Select value={selectedSchema} onValueChange={setSelectedSchema}>
             <SelectTrigger>
               <SelectValue placeholder="Choose a schema" />
@@ -54,26 +54,30 @@ export const ExtractionTask: React.FC<ExtractionTaskProps> = ({ schemas, onExtra
           </Select>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium mb-2">Upload Files</label>
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-muted-foreground">Upload Files</label>
           <FileUpload onFileSelect={handleFileSelect} />
         </div>
 
         {selectedFiles.length > 0 && (
-          <div>
-            <h3 className="font-medium mb-2">Selected Files:</h3>
+          <Card className="p-4 bg-muted/30">
+            <h3 className="font-medium mb-2 flex items-center gap-2">
+              <FileText className="w-4 h-4" />
+              Selected Files
+            </h3>
             <ul className="space-y-1">
               {selectedFiles.map((file, index) => (
-                <li key={index} className="text-sm text-gray-600">
+                <li key={index} className="text-sm text-muted-foreground flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-primary" />
                   {file.name}
                 </li>
               ))}
             </ul>
-          </div>
+          </Card>
         )}
 
-        <Button onClick={handleExtract} className="w-full">
-          <Play className="mr-2" />
+        <Button onClick={handleExtract} className="w-full gap-2">
+          <Play className="w-4 h-4" />
           Start Extraction
         </Button>
       </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from './ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
-import { Download, Check, X } from 'lucide-react';
+import { Download, CheckCircle2, XCircle } from 'lucide-react';
 import { Button } from './ui/button';
 import type { SchemaField } from './SchemaBuilder';
 
@@ -45,8 +45,8 @@ export const ExtractionResults: React.FC<ExtractionResultsProps> = ({ results, s
     <Card className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-semibold">Extraction Results</h2>
-        <Button onClick={handleDownload} variant="outline">
-          <Download className="mr-2" />
+        <Button onClick={handleDownload} variant="outline" className="gap-2">
+          <Download className="w-4 h-4" />
           Download CSV
         </Button>
       </div>
@@ -68,9 +68,15 @@ export const ExtractionResults: React.FC<ExtractionResultsProps> = ({ results, s
                 <TableCell>{result.fileName}</TableCell>
                 <TableCell>
                   {result.status === 'success' ? (
-                    <Check className="text-green-500" />
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="text-green-500 w-4 h-4" />
+                      <span className="text-green-600 text-sm">Success</span>
+                    </div>
                   ) : (
-                    <X className="text-red-500" />
+                    <div className="flex items-center gap-2">
+                      <XCircle className="text-red-500 w-4 h-4" />
+                      <span className="text-red-600 text-sm">Failed</span>
+                    </div>
                   )}
                 </TableCell>
                 {schema.map((field, fieldIndex) => (

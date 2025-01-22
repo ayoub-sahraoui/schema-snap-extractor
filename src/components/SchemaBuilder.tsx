@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, Save } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { toast } from 'sonner';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export interface SchemaField {
   name: string;
@@ -43,26 +44,37 @@ export const SchemaBuilder: React.FC<SchemaBuilderProps> = ({ onSave }) => {
   };
 
   return (
-    <Card className="p-6">
-      <h2 className="text-2xl font-semibold mb-4">Schema Builder</h2>
+    <Card className="p-6 space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-semibold">Schema Builder</h2>
+        <Button onClick={handleSave} className="gap-2">
+          <Save className="w-4 h-4" />
+          Save Schema
+        </Button>
+      </div>
+
       <div className="space-y-4">
         {fields.map((field, index) => (
-          <div key={index} className="flex gap-4">
+          <div key={index} className="flex gap-4 items-center">
             <Input
               placeholder="Field name"
               value={field.name}
               onChange={(e) => updateField(index, { name: e.target.value })}
               className="flex-1"
             />
-            <select
+            <Select
               value={field.type}
-              onChange={(e) => updateField(index, { type: e.target.value as SchemaField['type'] })}
-              className="px-3 py-2 border rounded-md"
+              onValueChange={(value) => updateField(index, { type: value as SchemaField['type'] })}
             >
-              <option value="text">Text</option>
-              <option value="number">Number</option>
-              <option value="date">Date</option>
-            </select>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="text">Text</SelectItem>
+                <SelectItem value="number">Number</SelectItem>
+                <SelectItem value="date">Date</SelectItem>
+              </SelectContent>
+            </Select>
             <Button
               variant="destructive"
               size="icon"
@@ -74,13 +86,11 @@ export const SchemaBuilder: React.FC<SchemaBuilderProps> = ({ onSave }) => {
           </div>
         ))}
       </div>
-      <div className="flex gap-4 mt-6">
-        <Button onClick={addField} variant="outline">
-          <Plus className="h-4 w-4 mr-2" />
-          Add Field
-        </Button>
-        <Button onClick={handleSave}>Save Schema</Button>
-      </div>
+
+      <Button onClick={addField} variant="outline" className="w-full gap-2">
+        <Plus className="h-4 w-4" />
+        Add Field
+      </Button>
     </Card>
   );
 };
