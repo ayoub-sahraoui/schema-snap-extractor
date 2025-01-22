@@ -3,8 +3,9 @@ import { SchemaBuilder, type SchemaField } from '@/components/SchemaBuilder';
 import { ExtractionTask } from '@/components/ExtractionTask';
 import { ExtractionResults } from '@/components/ExtractionResults';
 import { Dashboard } from '@/components/Dashboard';
+import { Settings } from '@/components/Settings';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { FileText, Settings, BarChart, Table } from 'lucide-react';
+import { FileText, Settings2, BarChart, Table } from 'lucide-react';
 
 const Index = () => {
   const [schemas, setSchemas] = useState<SchemaField[][]>([]);
@@ -56,13 +57,13 @@ const Index = () => {
       </p>
       
       <Tabs defaultValue="dashboard" className="space-y-8">
-        <TabsList className="grid w-full grid-cols-4 lg:w-[600px]">
+        <TabsList className="grid w-full grid-cols-5 lg:w-[600px]">
           <TabsTrigger value="dashboard" className="flex items-center gap-2">
             <BarChart className="w-4 h-4" />
             Dashboard
           </TabsTrigger>
           <TabsTrigger value="schema" className="flex items-center gap-2">
-            <Settings className="w-4 h-4" />
+            <Settings2 className="w-4 h-4" />
             Schema
           </TabsTrigger>
           <TabsTrigger value="extract" className="flex items-center gap-2">
@@ -72,6 +73,10 @@ const Index = () => {
           <TabsTrigger value="results" className="flex items-center gap-2">
             <Table className="w-4 h-4" />
             Results
+          </TabsTrigger>
+          <TabsTrigger value="settings" className="flex items-center gap-2">
+            <Settings2 className="w-4 h-4" />
+            Settings
           </TabsTrigger>
         </TabsList>
 
@@ -99,6 +104,10 @@ const Index = () => {
               </p>
             </div>
           )}
+        </TabsContent>
+
+        <TabsContent value="settings" className="space-y-4">
+          <Settings />
         </TabsContent>
       </Tabs>
     </div>
