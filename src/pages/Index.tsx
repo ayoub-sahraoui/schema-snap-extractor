@@ -8,13 +8,52 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FileText, Settings2, BarChart, Table } from 'lucide-react';
 
 const Index = () => {
-  const [schemas, setSchemas] = useState<SchemaField[][]>([]);
-  const [results, setResults] = useState<{
-    fileName: string;
-    status: 'success' | 'failed';
-    data: Record<string, string>;
-  }[]>([]);
-  const [activeSchema, setActiveSchema] = useState<SchemaField[]>([]);
+  // Initial demo schema
+  const initialSchema: SchemaField[] = [
+    { name: "Invoice Number", type: "text" },
+    { name: "Date", type: "date" },
+    { name: "Amount", type: "number" },
+    { name: "Company Name", type: "text" }
+  ];
+
+  const [schemas, setSchemas] = useState<SchemaField[][]>([initialSchema]);
+  
+  // Initial demo results
+  const initialResults = [
+    {
+      fileName: "invoice_001.pdf",
+      status: "success" as const,
+      data: {
+        "Invoice Number": "INV-2024-001",
+        "Date": "2024-03-15",
+        "Amount": "$1,250.00",
+        "Company Name": "Tech Solutions Inc."
+      }
+    },
+    {
+      fileName: "invoice_002.pdf",
+      status: "success" as const,
+      data: {
+        "Invoice Number": "INV-2024-002",
+        "Date": "2024-03-16",
+        "Amount": "$2,780.50",
+        "Company Name": "Digital Services Ltd."
+      }
+    },
+    {
+      fileName: "invoice_003.pdf",
+      status: "failed" as const,
+      data: {
+        "Invoice Number": "-",
+        "Date": "-",
+        "Amount": "-",
+        "Company Name": "-"
+      }
+    }
+  ];
+
+  const [results, setResults] = useState(initialResults);
+  const [activeSchema, setActiveSchema] = useState<SchemaField[]>(initialSchema);
 
   const handleSaveSchema = (schema: SchemaField[]) => {
     setSchemas([...schemas, schema]);
@@ -32,7 +71,7 @@ const Index = () => {
     }));
 
     setActiveSchema(schemas[schemaId]);
-    setResults(mockResults);
+    setResults([...results, ...mockResults]);
   };
 
   // Mock data for dashboard
@@ -56,7 +95,7 @@ const Index = () => {
         Extract structured data from your documents using AI
       </p>
       
-      <Tabs defaultValue="dashboard" className="space-y-8">
+      <Tabs defaultValue="results" className="space-y-8">
         <TabsList className="grid w-full grid-cols-5 lg:w-[600px]">
           <TabsTrigger value="dashboard" className="flex items-center gap-2">
             <BarChart className="w-4 h-4" />
@@ -93,17 +132,7 @@ const Index = () => {
         </TabsContent>
 
         <TabsContent value="results" className="space-y-4">
-          {results.length > 0 ? (
-            <ExtractionResults results={results} schema={activeSchema} />
-          ) : (
-            <div className="text-center py-12 bg-muted/30 rounded-lg border border-dashed">
-              <FileText className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
-              <h3 className="text-lg font-medium text-muted-foreground mb-2">No extraction results yet</h3>
-              <p className="text-sm text-muted-foreground">
-                Start by selecting a schema and uploading files in the Extract tab.
-              </p>
-            </div>
-          )}
+          <ExtractionResults results={results} schema={activeSchema} />
         </TabsContent>
 
         <TabsContent value="settings" className="space-y-4">
