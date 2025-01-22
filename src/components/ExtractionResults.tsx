@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card } from './ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
-import { Download, CheckCircle2, XCircle } from 'lucide-react';
+import { Download, CheckCircle2, XCircle, Image } from 'lucide-react';
 import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import type { SchemaField } from './SchemaBuilder';
@@ -125,6 +125,15 @@ export const ExtractionResults: React.FC<ExtractionResultsProps> = ({ results, s
               )}
             </div>
 
+            {/* Image Preview */}
+            <div className="mb-4">
+              <img 
+                src="/placeholder.svg"
+                alt="Document Preview"
+                className="w-full h-48 object-cover rounded-lg bg-muted"
+              />
+            </div>
+
             <div className="grid gap-4">
               {selectedResult && schema.map((field, index) => (
                 <div key={index} className="grid grid-cols-2 gap-4 p-3 rounded-lg bg-muted/40">
@@ -133,6 +142,34 @@ export const ExtractionResults: React.FC<ExtractionResultsProps> = ({ results, s
                 </div>
               ))}
             </div>
+
+            <Button 
+              onClick={() => {
+                if (!selectedResult) return;
+                const csvContent = [
+                  ['Field', 'Value'],
+                  ...schema.map(field => [
+                    field.name,
+                    selectedResult.data[field.name] || ''
+                  ])
+                ].map(row => row.join(',')).join('\n');
+
+                const blob = new Blob([csvContent], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${selectedResult.fileName}_extraction.csv`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+              }}
+              variant="outline"
+              className="w-full mt-4"
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Download Item as CSV
+            </Button>
           </div>
         </DialogContent>
       </Dialog>

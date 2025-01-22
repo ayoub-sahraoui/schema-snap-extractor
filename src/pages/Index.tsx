@@ -8,17 +8,32 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FileText, Settings2, BarChart, Table } from 'lucide-react';
 
 const Index = () => {
-  // Initial demo schema
-  const initialSchema: SchemaField[] = [
-    { name: "Invoice Number", type: "text" },
-    { name: "Date", type: "date" },
-    { name: "Amount", type: "number" },
-    { name: "Company Name", type: "text" }
+  // Demo schemas
+  const demoSchemas: SchemaField[][] = [
+    [
+      { name: "Invoice Number", type: "text" },
+      { name: "Date", type: "date" },
+      { name: "Amount", type: "number" },
+      { name: "Company Name", type: "text" }
+    ],
+    [
+      { name: "Order ID", type: "text" },
+      { name: "Customer Name", type: "text" },
+      { name: "Order Date", type: "date" },
+      { name: "Total Items", type: "number" },
+      { name: "Total Amount", type: "number" }
+    ],
+    [
+      { name: "Receipt Number", type: "text" },
+      { name: "Transaction Date", type: "date" },
+      { name: "Payment Method", type: "text" },
+      { name: "Amount Paid", type: "number" }
+    ]
   ];
 
-  const [schemas, setSchemas] = useState<SchemaField[][]>([initialSchema]);
+  const [schemas, setSchemas] = useState<SchemaField[][]>(demoSchemas);
   
-  // Initial demo results
+  // Initial demo results with proper typing
   const initialResults = [
     {
       fileName: "invoice_001.pdf",
@@ -53,7 +68,7 @@ const Index = () => {
   ];
 
   const [results, setResults] = useState(initialResults);
-  const [activeSchema, setActiveSchema] = useState<SchemaField[]>(initialSchema);
+  const [activeSchema, setActiveSchema] = useState<SchemaField[]>(demoSchemas[0]);
 
   const handleSaveSchema = (schema: SchemaField[]) => {
     setSchemas([...schemas, schema]);
