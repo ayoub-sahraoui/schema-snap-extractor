@@ -23,11 +23,11 @@ const Index = () => {
     // Mock extraction results for demonstration
     const mockResults = files.map(file => ({
       fileName: file.name,
-      status: Math.random() > 0.2 ? 'success' : 'failed',
+      status: Math.random() > 0.2 ? 'success' as const : 'failed' as const,
       data: schemas[schemaId].reduce((acc, field) => ({
         ...acc,
         [field.name]: `Sample ${field.name} data`
-      }), {})
+      }), {} as Record<string, string>)
     }));
 
     setActiveSchema(schemas[schemaId]);
