@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { SchemaBuilder, type SchemaField } from '@/components/SchemaBuilder';
 import { ExtractionTask } from '@/components/ExtractionTask';
@@ -76,16 +77,27 @@ const Index = () => {
 
   const handleExtract = async (files: File[], schemaId: number) => {
     // Mock extraction results for demonstration
-    const mockResults = files.map(file => ({
-      fileName: file.name,
-      status: Math.random() > 0.2 ? ("success" as const) : ("failed" as const),
-      data: schemas[schemaId].reduce((acc, field) => ({
-        ...acc,
-        [field.name]: field.type === "number" ? 
-          `$${(Math.random() * 1000).toFixed(2)}` : 
-          `Sample ${field.name} data`
-      }), {} as Record<string, string>)
-    }));
+    const mockResults = files.map(file => {
+      const isSuccess = Math.random() > 0.2;
+      const mockData: Record<string, string> = {};
+      
+      // Generate mock data based on the selected schema
+      schemas[schemaId].forEach(field => {
+        if (field.type === "number") {
+          mockData[field.name] = `$${(Math.random() * 1000).toFixed(2)}`;
+        } else if (field.type === "date") {
+          mockData[field.name] = new Date().toISOString().split('T')[0];
+        } else {
+          mockData[field.name] = `Sample ${field.name}`;
+        }
+      });
+
+      return {
+        fileName: file.name,
+        status: isSuccess ? ("success" as const) : ("failed" as const),
+        data: mockData
+      };
+    });
 
     setActiveSchema(schemas[schemaId]);
     setResults([...results, ...mockResults]);
