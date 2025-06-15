@@ -7,6 +7,7 @@ import { Dashboard } from '@/components/Dashboard';
 import { Settings } from '@/components/Settings';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FileText, Settings2, BarChart, Table } from 'lucide-react';
+import type { ExtractionResult } from '@/types/extraction';
 
 const Index = () => {
   // Demo schemas
@@ -35,10 +36,10 @@ const Index = () => {
   const [schemas, setSchemas] = useState<SchemaField[][]>(demoSchemas);
   
   // Initial demo results with proper typing
-  const initialResults = [
+  const initialResults: ExtractionResult[] = [
     {
       fileName: "invoice_001.pdf",
-      status: "success" as const,
+      status: "success",
       data: {
         "Invoice Number": "INV-2024-001",
         "Date": "2024-03-15",
@@ -48,7 +49,7 @@ const Index = () => {
     },
     {
       fileName: "invoice_002.pdf",
-      status: "success" as const,
+      status: "success",
       data: {
         "Invoice Number": "INV-2024-002",
         "Date": "2024-03-16",
@@ -58,7 +59,7 @@ const Index = () => {
     },
     {
       fileName: "invoice_003.pdf",
-      status: "failed" as const,
+      status: "failed",
       data: {
         "Invoice Number": "-",
         "Date": "-",
@@ -68,7 +69,7 @@ const Index = () => {
     }
   ];
 
-  const [results, setResults] = useState(initialResults);
+  const [results, setResults] = useState<ExtractionResult[]>(initialResults);
   const [activeSchema, setActiveSchema] = useState<SchemaField[]>(demoSchemas[0]);
 
   const handleSaveSchema = (schema: SchemaField[]) => {
@@ -77,7 +78,7 @@ const Index = () => {
 
   const handleExtract = async (files: File[], schemaId: number) => {
     // Mock extraction results for demonstration
-    const mockResults = files.map(file => {
+    const mockResults: ExtractionResult[] = files.map(file => {
       const isSuccess = Math.random() > 0.2;
       const mockData: Record<string, string> = {};
       
@@ -94,7 +95,7 @@ const Index = () => {
 
       return {
         fileName: file.name,
-        status: isSuccess ? ("success" as const) : ("failed" as const),
+        status: isSuccess ? "success" : "failed",
         data: mockData
       };
     });

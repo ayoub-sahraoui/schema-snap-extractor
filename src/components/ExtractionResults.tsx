@@ -5,12 +5,7 @@ import { Download, CheckCircle2, XCircle, Image } from 'lucide-react';
 import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import type { SchemaField } from './SchemaBuilder';
-
-interface ExtractionResult {
-  fileName: string;
-  status: 'success' | 'failed';
-  data: Record<string, string>;
-}
+import type { ExtractionResult } from '@/types/extraction';
 
 interface ExtractionResultsProps {
   results: ExtractionResult[];
